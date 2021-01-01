@@ -41,9 +41,9 @@ module.exports = class {
         });
     }
 
-    async download(bucket, buffer, targetPath) {
+    async download(bucket, targetPath) {
         if(this.options.verbose) {
-            console.log({bucket, buffer, targetPath});
+            console.log({bucket, targetPath});
         }
         return axios.get(`https://${bucket}.storage.yandexcloud.net/${targetPath}`, {
             validateStatus: (status) => {

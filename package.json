@@ -1,6 +1,6 @@
 {
   "name": "@cnlabs/yandexs3-rest",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "library than decorates yandex s3 rest api in lightweight style(small code size)",
   "main": "index.js",
   "keywords": [

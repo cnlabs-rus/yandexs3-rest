@@ -146,7 +146,6 @@ module.exports = class {
         if(this.options.verbose) {
             console.log({bucket, options});
         }
-        await Promise.all(ListBucketResult.Contents.map(({Key}) => this.delete(bucket, Key)));
         return axios.get(`https://${bucket}.storage.yandexcloud.net/`, {
             params: options,
             validateStatus: (status) => {

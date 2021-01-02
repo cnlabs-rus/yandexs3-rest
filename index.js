@@ -146,8 +146,7 @@ module.exports = class {
         if(this.options.verbose) {
             console.log({bucket, options});
         }
-        return axios.get(`https://${bucket}.storage.yandexcloud.net/`, {
-            params: options,
+        return axios.get(`https://${bucket}.storage.yandexcloud.net/?` + Object.getOwnPropertyNames(options).map(v=>v+"="+encodeURIComponent(options[v])).join('&'), {
             validateStatus: (status) => {
                 return true
             }

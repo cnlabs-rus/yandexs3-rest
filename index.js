@@ -142,4 +142,25 @@ module.exports = class {
             return response.data;
         });
     }
+    async list(bucket, options) {
+        if(this.options.verbose) {
+            console.log({bucket, options});
+        }
+        await Promise.all(ListBucketResult.Contents.map(({Key}) => this.delete(bucket, Key)));
+        return axios.get(`https://${bucket}.storage.yandexcloud.net/`, {
+            params: options,
+            validateStatus: (status) => {
+                return true
+            }
+        }).then(async (response) => {
+            if(response.status > 299) {
+                console.log(response.status, "\n", response.data);
+                throw new Error('Error while sending request');
+            }
+            if(this.options.verbose) {
+                console.log(response.status, "\n", response.data);
+            }
+            return new Promise((resolve, reject) => parseString(response.data, (e, d) => e && reject(e) || resolve(d)));
+        }).then(({ListBucketResult}) => ListBucketResult);
+    }
 }

@@ -80,11 +80,35 @@ module.exports = class {
             return response.data;
         });
     }
+
     async createBucket(bucket) {
         if(this.options.verbose) {
             console.log({bucket});
         }
-        return axios.put(`https://storage.yandexcloud.net/${bucket}`, {
+        return axios.put(`https://storage.yandexcloud.net/${bucket}`, null,{
+            validateStatus: (status) => {
+                return true
+            },
+            headers: {
+                "x-amz-acl": 'authenticated-read',
+            }
+        }).then(async (response) => {
+            if(response.status > 299) {
+                console.log(response.status, "\n", response.data);
+                throw new Error('Error while sending request');
+            }
+            if(this.options.verbose) {
+                console.log(response.status, "\n", response.data);
+            }
+            return response.data;
+        });
+    }
+
+    async getBucketMeta(bucket) {
+        if(this.options.verbose) {
+            console.log({bucket});
+        }
+        return axios.head(`https://storage.yandexcloud.net/${bucket}`, {},{
             validateStatus: (status) => {
                 return true
             }
@@ -101,7 +125,7 @@ module.exports = class {
     }
     async deleteBucket(bucket) {
         if(this.options.verbose) {
-            console.log({bucket, targetPath});
+            console.log({bucket});
         }
         return axios.delete(`https://storage.yandexcloud.net/${bucket}`, {
             validateStatus: (status) => {

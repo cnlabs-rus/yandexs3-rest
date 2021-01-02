@@ -1,7 +1,4 @@
-/**
- * @jest-environment node
- */
-
+const {parseString} = require('xml2js');
 const axios = require('axios').create();
 const {aws4Interceptor} = require("aws4-axios");
 
@@ -90,7 +87,7 @@ module.exports = class {
                 return true
             },
             headers: {
-                "x-amz-acl": 'authenticated-read',
+                "x-amz-acl": 'private',
             }
         }).then(async (response) => {
             if(response.status > 299) {
@@ -127,6 +124,9 @@ module.exports = class {
         if(this.options.verbose) {
             console.log({bucket});
         }
+        const {data} = await axios.get(`https://${bucket}.storage.yandexcloud.net/`);
+        const {ListBucketResult} = await new Promise((resolve, reject) => parseString(data, (e, d) => e && reject(e) || resolve(d)));
+        await Promise.all(ListBucketResult.Contents.map(({Key}) => this.delete(bucket, Key)));
         return axios.delete(`https://storage.yandexcloud.net/${bucket}`, {
             validateStatus: (status) => {
                 return true

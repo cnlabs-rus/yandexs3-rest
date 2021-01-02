@@ -7,4 +7,4 @@ const s3 = new YandexS3({
     verbose: true,
 });
 
-s3.deleteBucket("ll-test-db").then(console.log);
+s3.deleteBucket("migger-1609598199541").then(console.log);

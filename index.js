@@ -60,4 +60,24 @@ module.exports = class {
             return response.data;
         });
     }
+
+    async delete(bucket, targetPath) {
+        if(this.options.verbose) {
+            console.log({bucket, targetPath});
+        }
+        return axios.delete(`https://${bucket}.storage.yandexcloud.net/${targetPath}`, {
+            validateStatus: (status) => {
+                return true
+            }
+        }).then(async (response) => {
+            if(response.status > 299) {
+                console.log(response.status, "\n", response.data);
+                throw new Error('Error while sending request');
+            }
+            if(this.options.verbose) {
+                console.log(response.status, "\n", response.data);
+            }
+            return response.data;
+        });
+    }
 }

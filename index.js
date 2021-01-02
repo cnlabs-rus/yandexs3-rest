@@ -84,7 +84,7 @@ module.exports = class {
         if(this.options.verbose) {
             console.log({bucket});
         }
-        return axios.put(`https://${bucket}.storage.yandexcloud.net/`, {
+        return axios.put(`https://storage.yandexcloud.net/${bucket}`, {
             validateStatus: (status) => {
                 return true
             }
@@ -103,7 +103,7 @@ module.exports = class {
         if(this.options.verbose) {
             console.log({bucket, targetPath});
         }
-        return axios.delete(`https://${bucket}.storage.yandexcloud.net/`, {
+        return axios.delete(`https://storage.yandexcloud.net/${bucket}`, {
             validateStatus: (status) => {
                 return true
             }

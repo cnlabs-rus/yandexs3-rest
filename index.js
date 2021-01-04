@@ -22,7 +22,7 @@ module.exports = class {
         if(this.options.verbose) {
             console.log({bucket, buffer, targetPath});
         }
-        return axios.put(`https://${bucket}.storage.yandexcloud.net/${targetPath}`, buffer, {
+        return axios.put(`https://storage.yandexcloud.net/${bucket}/${targetPath}`, buffer, {
             validateStatus: (status) => {
                 return true
             }
@@ -42,7 +42,7 @@ module.exports = class {
         if(this.options.verbose) {
             console.log({bucket, targetPath});
         }
-        return axios.get(`https://${bucket}.storage.yandexcloud.net/${targetPath}`, {
+        return axios.get(`https://storage.yandexcloud.net/${bucket}/${targetPath}`, {
             validateStatus: (status) => {
                 return true
             }
@@ -62,7 +62,7 @@ module.exports = class {
         if(this.options.verbose) {
             console.log({bucket, targetPath});
         }
-        return axios.delete(`https://${bucket}.storage.yandexcloud.net/${targetPath}`, {
+        return axios.delete(`https://storage.yandexcloud.net/${bucket}/${targetPath}`, {
             validateStatus: (status) => {
                 return true
             }
@@ -124,7 +124,7 @@ module.exports = class {
         if(this.options.verbose) {
             console.log({bucket});
         }
-        const {data} = await axios.get(`https://${bucket}.storage.yandexcloud.net/`);
+        const {data} = await axios.get(`https://storage.yandexcloud.net/${bucket}`);
         const {ListBucketResult} = await new Promise((resolve, reject) => parseString(data, (e, d) => e && reject(e) || resolve(d)));
         await Promise.all(ListBucketResult.Contents.map(({Key}) => this.delete(bucket, Key)));
         return axios.delete(`https://storage.yandexcloud.net/${bucket}`, {
@@ -146,7 +146,7 @@ module.exports = class {
         if(this.options.verbose) {
             console.log({bucket, options});
         }
-        return axios.get(`https://${bucket}.storage.yandexcloud.net/?` + Object.getOwnPropertyNames(options).map(v=>v+"="+encodeURIComponent(options[v])).join('&'), {
+        return axios.get(`https://storage.yandexcloud.net/${bucket}?` + Object.getOwnPropertyNames(options).map(v=>v+"="+encodeURIComponent(options[v])).join('&'), {
             validateStatus: (status) => {
                 return true
             }
